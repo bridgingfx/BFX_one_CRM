@@ -1700,7 +1700,8 @@ ALTER TABLE `payment_logs`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2503;
+MODIFY `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+AUTO_INCREMENT=2503;
 
 --
 -- AUTO_INCREMENT for table `propfirm_account_types`
@@ -1754,7 +1755,7 @@ ALTER TABLE `relationship_manager`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `role_id`BIGINT(20) UNSIGNED  NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -1794,13 +1795,13 @@ ALTER TABLE `broker_liveaccount`
 -- Constraints for table `model_has_permissions`
 --
 ALTER TABLE `model_has_permissions`
-  ADD CONSTRAINT `model_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions_old` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `model_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `model_has_roles`
 --
 ALTER TABLE `model_has_roles`
-  ADD CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles_old` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `propfirm_account_types`
