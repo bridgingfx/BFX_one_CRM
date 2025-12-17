@@ -17,7 +17,7 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
     <!-- Scripts -->
-    <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+    <link rel="icon" type="image/png" href="{{ URL::asset('assets/images/resources/fav.png') }}">
     <link rel="stylesheet"
         href="{{ URL::asset('assets/vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" />
     <!--<link rel="stylesheet" href="{{ URL::asset('assets/vendor/swiper/css/swiper-bundle.min.css') }}">-->

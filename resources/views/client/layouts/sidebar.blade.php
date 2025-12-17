@@ -55,7 +55,7 @@
 							</ul>
 						</li>
 						<li>
-							<a class="" href="javascript:void(0);" aria-expanded="false">
+							<a class="" href="{{ route('general.bonus') }}" aria-expanded="false">
 								<i data-lucide="badge-dollar-sign"></i>
 								<span class="nav-text">Bonus</span>
 							</a>

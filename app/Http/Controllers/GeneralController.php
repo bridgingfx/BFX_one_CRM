@@ -64,4 +64,13 @@ class GeneralController extends Controller
 			'pageTitle' => $pageTitle,
         ]);
     }
+
+    public function bonus(Request $request): View
+    {
+		$pageTitle = "Bonus";
+        return view('client.general.bonus', [
+            'user' => $request->user(),
+			'pageTitle' => $pageTitle,
+        ]);
+    }
 }

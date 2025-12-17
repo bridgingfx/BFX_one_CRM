@@ -68,5 +68,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('/openticket', [GeneralController::class, 'openTicket'])->name('general.openticket');
 	Route::get('/closedticket', [GeneralController::class, 'closedTicket'])->name('general.closedticket');
 	
+	// Promotions
+	Route::get('/bonus', [GeneralController::class, 'bonus'])->name('general.bonus');
 	
 });

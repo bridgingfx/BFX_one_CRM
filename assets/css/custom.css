@@ -1,89 +1,195 @@
+/* General */
+.spark-hover {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px; /* optional */
+  transition: transform 0.5s ease;
+}
+
+/* Shimmer overlay */
+.spark-hover::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg) translateX(-100%);
+  pointer-events: none;
+  transition: transform 0.7s ease;
+}
+
+/* Hover effect */
+.spark-hover:hover::after {
+  transform: rotate(45deg) translateX(100%);
+}
+
+.spark-hover:hover h4,
+.spark-hover:hover img {
+  transform: scale(1.05);
+  transition: transform 0.5s ease;
+}
+
+
+.rounded-img {
+    border-radius: 2rem;
+}
+
+/* Bonus Cards */
+.bonus-grid-card {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.bonus-cards {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.bonus-cards .bonus-img {
+    overflow: hidden;
+    position: relative;
+}
+.bonus-cards .bonus-img img {
+    width: 100%;
+    -webkit-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    transition: all 0.5s;
+    border-radius: 0.5rem;
+}
+.bonus-cards .bonus-img:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -85%;
+    z-index: 2;
+    display: block;
+    content: "";
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 100%
+    );
+    -webkit-transform: skewX(-25deg);
+    transform: skewX(-25deg);
+}
+
+.bonus-cards:hover .bonus-img:after {
+    webkit-animation: shine 0.75s;
+    animation: shine 0.75s;
+}
+
+@-webkit-keyframes shine {
+    100% {
+        left: 125%;
+    }
+}
+
+@keyframes shine {
+    100% {
+        left: 125%;
+    }
+}
+
 /* Dashboard Image Slider Left and Right */
 
-    .sliders-container {
-  display: grid;
-  grid-template-columns: 9fr 3fr;
-  gap: 20px;
-  width: 100%;
-  padding: 20px 0px;
+.sliders-container {
+    display: grid;
+    grid-template-columns: 9fr 3fr;
+    gap: 20px;
+    width: 100%;
+    padding: 20px 0px;
 }
 
 .slider-wrapper {
-  position: relative;
-  width: 100%;
-  height: 250px;
-  /* min-height: 450px; */
-  border-radius: 16px;
-  overflow: hidden;
-  background: var(--card);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 250px;
+    /* min-height: 450px; */
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--card);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .slider-images {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .slider-images img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* NAV ARROWS */
 .slider-nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--primary);
-  border: none;
-  color: #fff;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 3;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary);
+    border: none;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 3;
 }
 
-.slider-nav-left { left: 20px; }
-.slider-nav-right { right: 20px; }
+.slider-nav-left {
+    left: 20px;
+}
+.slider-nav-right {
+    right: 20px;
+}
 
 /* DOTS */
 .slider-dots {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
 }
 
 .slider-dots button {
-  width: 12px;
-  height: 12px;
-  background: transparent;
-  border-radius: 50%;
-  border: 2px solid var(--primary);
-  cursor: pointer;
+    width: 12px;
+    height: 12px;
+    background: transparent;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    cursor: pointer;
 }
 
 .slider-dots button.active {
-  background: var(--primary);
+    background: var(--primary);
 }
 
 /* MOBILE */
 @media (max-width: 768px) {
-  .sliders-container {
-    grid-template-columns: 1fr;
-  }
-  .slider-wrapper {
-    min-height: 350px;
-  }
+    .sliders-container {
+        grid-template-columns: 1fr;
+    }
+    .slider-wrapper {
+        min-height: 350px;
+    }
 }
-
 
 /* Promotional Singleticker slider */
 .promo-bar {
