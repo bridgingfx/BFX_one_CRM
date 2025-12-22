@@ -41,11 +41,12 @@
     ********************-->
     <div id="preloader">
         {{-- <div class="lds-ripple">
-			<div></div>
-			<div></div>
-		</div> --}}
+            <div></div>
+            <div></div>
+        </div> --}}
         <div>
-            {{-- <iframe src="https://lottie.host/embed/6aceff9d-8696-4bde-ac68-4188ac690768/RuB2bOfzm0.lottie"></iframe> --}}
+            {{-- <iframe
+                src="https://lottie.host/embed/6aceff9d-8696-4bde-ac68-4188ac690768/RuB2bOfzm0.lottie"></iframe> --}}
             <dotlottie-wc src="https://lottie.host/6aceff9d-8696-4bde-ac68-4188ac690768/RuB2bOfzm0.lottie"
                 style="width: 300px;height: 300px" autoplay loop></dotlottie-wc>
         </div>
@@ -70,7 +71,8 @@
 
     <!-- Chart piety plugin files -->
     <script src="{{ URL::asset('assets/vendor/peity/jquery.peity.min.js') }}"></script>
-    {{-- <script src="{{ URL::asset('assets/vendor/swiper/js/swiper-bundle.min.js') }}"></script> --}}
+    {{--
+    <script src="{{ URL::asset('assets/vendor/swiper/js/swiper-bundle.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 
     <!-- counter -->
@@ -85,8 +87,8 @@
     <script src="{{ URL::asset('assets/js/dashboard/crypto-watch.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
-        jQuery(document).ready(function() {
-            setTimeout(function() {
+        jQuery(document).ready(function () {
+            setTimeout(function () {
                 dlabSettingsOptions.version = 'light';
                 new dlabSettings(dlabSettingsOptions);
                 setCookie('version', 'light');
