@@ -1,491 +1,360 @@
 @extends('layouts.app')
+@push('styles')
+	<style>
+		.top-nav-tabs {
+			background: #fff;
+			border: 1px solid #eef0f4;
+			border-radius: 14px;
+			padding: 10px;
+			gap: 10px;
+		}
+
+		.top-nav-tabs .nav-link {
+			border-radius: 12px;
+			padding: 10px 18px;
+			color: #0f172a;
+			font-weight: 600;
+			text-transform: uppercase;
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.top-nav-tabs .nav-link i {
+			width: 18px;
+			height: 18px;
+		}
+
+		.top-nav-tabs .nav-link.active {
+			background: var(--primary);
+			color: #fff;
+		}
+
+		.account-table {
+			border-collapse: separate;
+			border-spacing: 0;
+		}
+
+		.account-table thead th {
+			background: #f8fafc;
+			border-bottom: 1px solid #e9edf3;
+			padding: 14px 16px;
+			font-weight: 700;
+			font-size: 11px;
+			text-transform: uppercase;
+			color: #64748b;
+			text-align: left;
+		}
+
+		.account-table tbody td {
+			padding: 16px;
+			border-bottom: 1px solid #e9edf3;
+			vertical-align: middle;
+		}
+
+		.account-table tbody tr:last-child td {
+			border-bottom: none;
+		}
+
+		.account-icon {
+			width: 48px;
+			height: 48px;
+			border-radius: 12px;
+			background: linear-gradient(135deg, #10b981, #fbbf24);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: relative;
+			flex-shrink: 0;
+		}
+
+		.account-icon .badge-5 {
+			position: absolute;
+			bottom: -4px;
+			right: -4px;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			background: var(--primary);
+			color: #fff;
+			font-size: 10px;
+			font-weight: 700;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 2px solid #fff;
+		}
+
+		.account-info h6 {
+			margin: 0;
+			font-weight: 700;
+			font-size: 16px;
+			color: #0f172a;
+		}
+
+		.account-info small {
+			color: #64748b;
+			font-size: 12px;
+		}
+
+		.action-btn {
+			border-radius: 8px;
+			padding: 8px 16px;
+			font-size: 12px;
+			font-weight: 600;
+			text-transform: uppercase;
+		}
+
+		.sidebar-card {
+			border-radius: 14px;
+			padding: 20px;
+			margin-bottom: 16px;
+			transition: transform 0.2s ease;
+		}
+
+		.sidebar-card.create-account {
+			background: linear-gradient(135deg, #1f4c7a, #0b2e57);
+			color: #fff;
+		}
+
+		.sidebar-card.create-account h5 {
+			color: #fff;
+			font-weight: 700;
+			margin: 0 0 4px;
+		}
+
+		.sidebar-card.create-account p {
+			color: rgba(255, 255, 255, 0.9);
+			margin: 0;
+			font-size: 12px;
+		}
+
+		.sidebar-card.quick-action {
+			background: #fff;
+			border: 1px solid #e9edf3;
+			box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+		}
+
+		.sidebar-card.quick-action h6 {
+			margin: 0;
+			font-weight: 700;
+			font-size: 14px;
+			color: #0f172a;
+		}
+
+		.quick-icon {
+			width: 48px;
+			height: 48px;
+			border-radius: 12px;
+			background: rgba(16, 185, 129, 0.12);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.quick-icon i {
+			width: 24px;
+			height: 24px;
+			color: #10b981;
+		}
+
+		.create-icon {
+			width: 48px;
+			height: 48px;
+			border-radius: 12px;
+			background: rgba(255, 255, 255, 0.14);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.create-icon i {
+			width: 24px;
+			height: 24px;
+			color: #fff;
+		}
+	</style>
+@endpush
 @section('content')
 
 	<div class="content-body">
 		<div class="container-fluid pt-0">
-			<div class="row">
-				<div class="col-xl-12">
+			{{-- Top Navigation Tabs --}}
+			<div class="row mb-4">
+				<div class="col-12">
+					<nav class="w-100">
+						<div class="nav nav-pills top-nav-tabs w-100" role="tablist">
+							<a class="nav-link active" href="{{ route('broker.liveaccount') }}">
+								<i data-lucide="shield"></i> {{ __('Live Accounts') }}
+							</a>
+							<a class="nav-link" href="{{ route('broker.demoaccount') }}">
+								<i data-lucide="hexagon"></i> {{ __('Demo Accounts') }}
+							</a>
+							<a class="nav-link" href="#">
+								<i data-lucide="download"></i> {{ __('Platform Download') }}
+							</a>
+						</div>
+					</nav>
+				</div>
+			</div>
+
+			<div class="row g-4">
+				{{-- Main Content Area --}}
+				<div class="col-xl-9 col-lg-8">
 					<div class="card">
-						<div class="card-header border-0">
-							<div class="d-flex flex-wrap">
-								<div class="input-group width-300 mb-2">
-									<input type="text" class="form-control amount" placeholder="Search Accounts" />
-								</div>								
-								<select class="default-select p2p-select m-md-0 width-100 mb-2" aria-label="Default" tabindex="0" name="status">
-									<option value="All">All Status</option>
-									<option value="Active">Active</option>
-									<option value="Inactive">Inactive</option>
-									<option value="Suspended">Suspended</option>
-								</select>
+						<div class="card-header border-0 d-flex align-items-center justify-content-between flex-wrap">
+							<h4 class="card-title mb-0">{{ __('My Trading Live Accounts') }}</h4>
+							<a href="{{ route('broker.createLiveaccount') }}" class="btn btn-outline-primary">
+								{{ __('Open New Live Account') }}
+							</a>
+						</div>
+						<div class="card-body p-0">
+							<div class="table-responsive">
+								<table class="account-table w-100">
+									<thead>
+										<tr>
+											<th style="width: 50px;"></th>
+											<th>{{ __('Account') }}</th>
+											<th>{{ __('LEVERAGE') }}</th>
+											<th>{{ __('BALANCE') }}</th>
+											<th>{{ __('EQUITY') }}</th>
+											<th class="text-end">{{ __('Actions') }}</th>
+										</tr>
+									</thead>
+									<tbody>
+										{{-- Account 1 --}}
+										<tr>
+											<td>
+												<div class="account-icon">
+													<i data-lucide="globe"
+														style="width: 24px; height: 24px; color: #fff;"></i>
+													<span class="badge-5">5</span>
+												</div>
+											</td>
+											<td>
+												<div class="account-info">
+													<h6>473411</h6>
+													<small>LGFX_10_01</small>
+												</div>
+											</td>
+											<td>
+												<span class="fw-bold">200</span>
+											</td>
+											<td>
+												<span class="fw-bold">$ 0.00</span>
+											</td>
+											<td>
+												<span class="fw-bold">$ 0</span>
+											</td>
+											<td class="text-end">
+												<div class="d-flex gap-2 justify-content-end">
+													<a href="{{ route('broker.accountdetails') }}"
+														class="btn btn-outline-secondary btn-sm action-btn">
+														{{ __('View') }} →
+													</a>
+													<a href="{{ route('funds.funddeposit') }}"
+														class="btn btn-outline-primary btn-sm action-btn">
+														{{ __('Deposit') }} ▤
+													</a>
+												</div>
+											</td>
+										</tr>
+										{{-- Account 2 --}}
+										<tr>
+											<td>
+												<div class="account-icon">
+													<i data-lucide="globe"
+														style="width: 24px; height: 24px; color: #fff;"></i>
+													<span class="badge-5">5</span>
+												</div>
+											</td>
+											<td>
+												<div class="account-info">
+													<h6>820690</h6>
+													<small>LGFX-01</small>
+												</div>
+											</td>
+											<td>
+												<span class="fw-bold">500</span>
+											</td>
+											<td>
+												<span class="fw-bold">$ 0.00</span>
+											</td>
+											<td>
+												<span class="fw-bold">$ 0</span>
+											</td>
+											<td class="text-end">
+												<div class="d-flex gap-2 justify-content-end">
+													<a href="{{ route('broker.accountdetails') }}"
+														class="btn btn-outline-secondary btn-sm action-btn">
+														{{ __('View') }} →
+													</a>
+													<a href="{{ route('funds.funddeposit') }}"
+														class="btn btn-outline-primary btn-sm action-btn">
+														{{ __('Deposit') }} ▤
+													</a>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
-							<nav>
-								<div class="nav nav-pills light justify-content-center gap-lg-0 gap-3" id="nav-tab-p2p" role="tablist">
-									<button type="button" class="btn btn-primary" style="margin-right:10px" onclick="window.location='{{route('broker.createaccount') }}'" ><i class="fa fa-plus me-2"></i> Create Account</button>
-									<button type="button" class="btn btn-success" style="margin-right:10px" onclick="window.location='{{route('broker.liveaccount') }}'" ><i class="fa fa-plus me-2"></i> Live Account</button>
-									<button type="button" class="btn btn-warning" style="margin-right:10px" onclick="window.location='{{route('broker.demoaccount') }}'" ><i class="fa fa-plus me-2"></i> Demo Account</button>
-								</div>
-							</nav>
 						</div>
 					</div>
 				</div>
-				
-				<div class="col-xl-12 col-xxl-12">
-					<div class="row">
-						<div class="col-xl-3 col-lg-6 col-sm-6">
-							<div class="widget-stat card pull-up">
-								<div class="card-body p-4">
-									<div class="media ai-icon">
-										<span class="me-3 bgl-primary text-primary">
-											<!-- <i class="ti-user"></i> -->
-											<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wallet text-blue-600" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg>
-										</span>
-										<div class="media-body">
-											<p class="mb-1">Balance</p>
-											<h4 class="mb-0">$3280</h4>
-											<span class="badge badge-primary">+3.5%</span>
-										</div>
-									</div>
+
+				{{-- Right Sidebar --}}
+				<div class="col-xl-3 col-lg-4">
+					{{-- Create Account Card --}}
+					<a href="{{ route('broker.createLiveaccount') }}" class="text-decoration-none">
+						<div class="sidebar-card create-account">
+							<div class="d-flex align-items-center justify-content-between">
+								<div>
+									<h5>{{ __('Create Account') }}</h5>
+									<p>{{ __('Open Live Account') }}</p>
+								</div>
+								<div class="create-icon">
+									<i data-lucide="folder-plus"></i>
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-3 col-lg-6 col-sm-6">
-							<div class="widget-stat card pull-up">
-								<div class="card-body p-4">
-									<div class="media ai-icon">
-										<span class="me-3 bgl-warning text-warning">
-											<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign text-blue-600" aria-hidden="true"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-										</span>
-										<div class="media-body">
-											<p class="mb-1">Equity</p>
-											<h4 class="mb-0">$2570</h4>
-											<span class="badge badge-warning">+3.5%</span>
-										</div>
-									</div>
+					</a>
+
+					{{-- Quick Deposit Card --}}
+					<a href="{{ route('funds.funddeposit') }}" class="text-decoration-none">
+						<div class="sidebar-card quick-action">
+							<div class="d-flex align-items-center justify-content-between">
+								<h6>{{ __('Quick Deposit') }}</h6>
+								<div class="quick-icon">
+									<i data-lucide="zap"></i>
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-3  col-lg-6 col-sm-6">
-							<div class="widget-stat card pull-up">
-								<div class="card-body  p-4">
-									<div class="media ai-icon">
-										<span class="me-3 bgl-danger text-danger">
-											<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-column text-blue-600" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
-										</span>
-										<div class="media-body">
-											<p class="mb-1">Margin Level</p>
-											<h4 class="mb-0">$364.50K</h4>
-											<span class="badge badge-danger">-3.5%</span>
-										</div>
-									</div>
+					</a>
+
+					{{-- Quick Withdraw Card --}}
+					<a href="{{ route('funds.fundwithdrawal') }}" class="text-decoration-none">
+						<div class="sidebar-card quick-action">
+							<div class="d-flex align-items-center justify-content-between">
+								<h6>{{ __('Quick Withdraw') }}</h6>
+								<div class="quick-icon">
+									<i data-lucide="zap"></i>
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-3 col-lg-6 col-sm-6">
-							<div class="widget-stat card pull-up">
-								<div class="card-body p-4">
-									<div class="media ai-icon">
-										<span class="me-3 bgl-success text-success">
-											<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target text-blue-600" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-										</span>
-										<div class="media-body">
-											<p class="mb-1">Free Margin</p>
-											<h4 class="mb-0">$364.50K</h4>
-											<span class="badge badge-success">-3.5%</span>
-										</div>
-									</div>
+					</a>
+
+					{{-- My Profile Card --}}
+					<a href="{{ route('profile.edit') }}" class="text-decoration-none">
+						<div class="sidebar-card quick-action">
+							<div class="d-flex align-items-center justify-content-between">
+								<h6>{{ __('My Profile') }}</h6>
+								<div class="quick-icon">
+									<i data-lucide="user"></i>
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-				
-				<div class="col-xl-12 col-xxl-12">
-					<div class="row">
-						<div class="col-xl-4 col-md-6 col-sm-12 ">
-							<div class="card banking-card">
-								<div class="card-header border-0 pb-0">
-									<h4 class="card-title">MT5-123456789</h4>
-									<div class="dropdown custom-dropdown mb-0 tbl-orders-style">
-										<div class="btn sharp tp-btn" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-												<path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-												<path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-											</svg>
-										</div>
-										<div class="dropdown-menu dropdown-menu-end" style="">
-											<a class="dropdown-item" href="javascript:void(0);">See Credentials</a>
-											<a class="dropdown-item" href="{{ route('broker.accountdetails') }}">Details</a>
-											<a class="dropdown-item" href="javascript:void(0);">Analytics</a>
-											<a class="dropdown-item" href="javascript:void(0);">Reset password</a>
-										</div>
-									</div>
-								</div>
-								<div class="card-body px-3">
-									<div class="d-flex justify-content-around align-items-center">
-										<div class="overflow-hidden custome-tooltip">
-											<div class="chartRound"></div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-4 border-end border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Balance</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">119</span> k</h4>
-												<p class="m-0">Equity</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Margin</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Free Margin</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">119</span> k</h4>
-												<p class="m-0">Positions</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">P & L</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card-body pb-0 mb-3 pt-0 custome-tooltip d-flex justify-content-center gap-2 align-items-center">
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-success btn-sm light text-uppercase"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-arrow-down-right w-4 h-4" aria-hidden="true">
-                                            <path d="m7 7 10 10"></path>
-                                            <path d="M17 7v10H7"></path>
-                                        </svg> Deposit</a>
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-danger btn-sm light text-uppercase"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-arrow-up-right w-4 h-4" aria-hidden="true">
-                                            <path d="M7 7h10v10"></path>
-                                      	      <path d="M7 17 17 7"></path>
-                                        </svg> Withdraw</a>
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-info btn-sm light text-uppercase  "><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-credit-card w-4 h-4" aria-hidden="true">
-                                            <rect width="20" height="14" x="2" y="5" rx="2"></rect>
-                                            <line x1="2" x2="22" y1="10" y2="10"></line>
-                                        </svg> Transfer</a>
-                                </div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-md-6 col-sm-12 ">
-							<div class="card banking-card">
-								<div class="card-header border-0 pb-0">
-									<h4 class="card-title">MT5-123456789</h4>
-									<div class="dropdown custom-dropdown mb-0 tbl-orders-style">
-										<div class="btn sharp tp-btn" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-												<path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-												<path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-											</svg>
-										</div>
-										<div class="dropdown-menu dropdown-menu-end" style="">
-											<a class="dropdown-item" href="javascript:void(0);">See Credentials</a>
-											<a class="dropdown-item" href="{{ route('broker.accountdetails') }}">Details</a>
-											<a class="dropdown-item" href="javascript:void(0);">Analytics</a>
-											<a class="dropdown-item" href="javascript:void(0);">Reset password</a>
-										</div>
-									</div>
-								</div>
-								<div class="card-body px-3">
-									<div class="d-flex justify-content-around align-items-center">
-										<div class="overflow-hidden custome-tooltip">
-											<div class="chartRound"></div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-4 border-end border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Balance</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">119</span> k</h4>
-												<p class="m-0">Equity</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Margin</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Free Margin</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">119</span> k</h4>
-												<p class="m-0">Positions</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">P & L</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card-body pb-0 mb-3 pt-0 custome-tooltip d-flex justify-content-center gap-2 align-items-center">
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-success btn-sm light text-uppercase"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-arrow-down-right w-4 h-4" aria-hidden="true">
-                                            <path d="m7 7 10 10"></path>
-                                            <path d="M17 7v10H7"></path>
-                                        </svg> Deposit</a>
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-danger btn-sm light text-uppercase"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-arrow-up-right w-4 h-4" aria-hidden="true">
-                                            <path d="M7 7h10v10"></path>
-                                      	      <path d="M7 17 17 7"></path>
-                                        </svg> Withdraw</a>
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-info btn-sm light text-uppercase  "><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-credit-card w-4 h-4" aria-hidden="true">
-                                            <rect width="20" height="14" x="2" y="5" rx="2"></rect>
-                                            <line x1="2" x2="22" y1="10" y2="10"></line>
-                                        </svg> Transfer</a>
-                                </div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-md-6 col-sm-12 ">
-							<div class="card banking-card">
-								<div class="card-header border-0 pb-0">
-									<h4 class="card-title">MT5-123456789</h4>
-									<div class="dropdown custom-dropdown mb-0 tbl-orders-style">
-										<div class="btn sharp tp-btn" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-												<path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-												<path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-											</svg>
-										</div>
-										<div class="dropdown-menu dropdown-menu-end" style="">
-											<a class="dropdown-item" href="javascript:void(0);">See Credentials</a>
-											<a class="dropdown-item" href="{{ route('broker.accountdetails') }}">Details</a>
-											<a class="dropdown-item" href="javascript:void(0);">Analytics</a>
-											<a class="dropdown-item" href="javascript:void(0);">Reset password</a>
-										</div>
-									</div>
-								</div>
-								<div class="card-body px-3">
-									<div class="d-flex justify-content-around align-items-center">
-										<div class="overflow-hidden custome-tooltip">
-											<div class="chartRound"></div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-4 border-end border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Balance</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">119</span> k</h4>
-												<p class="m-0">Equity</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Margin</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Free Margin</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">119</span> k</h4>
-												<p class="m-0">Positions</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">P & L</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card-body pb-0 mb-3 pt-0 custome-tooltip d-flex justify-content-center gap-2 align-items-center">
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-success btn-sm light text-uppercase"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-arrow-down-right w-4 h-4" aria-hidden="true">
-                                            <path d="m7 7 10 10"></path>
-                                            <path d="M17 7v10H7"></path>
-                                        </svg> Deposit</a>
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-danger btn-sm light text-uppercase"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-arrow-up-right w-4 h-4" aria-hidden="true">
-                                            <path d="M7 7h10v10"></path>
-                                      	      <path d="M7 17 17 7"></path>
-                                        </svg> Withdraw</a>
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-info btn-sm light text-uppercase  "><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-credit-card w-4 h-4" aria-hidden="true">
-                                            <rect width="20" height="14" x="2" y="5" rx="2"></rect>
-                                            <line x1="2" x2="22" y1="10" y2="10"></line>
-                                        </svg> Transfer</a>
-                                </div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-md-6 col-sm-12 ">
-							<div class="card banking-card">
-								<div class="card-header border-0 pb-0">
-									<h4 class="card-title">MT5-123456789</h4>
-									<div class="dropdown custom-dropdown mb-0 tbl-orders-style">
-										<div class="btn sharp tp-btn" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-												<path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-												<path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-											</svg>
-										</div>
-										<div class="dropdown-menu dropdown-menu-end" style="">
-											<a class="dropdown-item" href="javascript:void(0);">See Credentials</a>
-											<a class="dropdown-item" href="{{ route('broker.accountdetails') }}">Details</a>
-											<a class="dropdown-item" href="javascript:void(0);">Analytics</a>
-											<a class="dropdown-item" href="javascript:void(0);">Reset password</a>
-										</div>
-									</div>
-								</div>
-								<div class="card-body px-3">
-									<div class="d-flex justify-content-around align-items-center">
-										<div class="overflow-hidden custome-tooltip">
-											<div class="chartRound"></div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-4 border-end border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Balance</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">119</span> k</h4>
-												<p class="m-0">Equity</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Margin</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">Free Margin</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom border-end">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">119</span> k</h4>
-												<p class="m-0">Positions</p>
-											</div>
-										</div>
-										<div class="col-4 border-bottom">
-											<div class="pt-3 pb-3 ps-0 pe-0 text-center">
-												<h4 class="m-1"><span class="counter">89</span> k</h4>
-												<p class="m-0">P & L</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card-body pb-0 mb-3 pt-0 custome-tooltip d-flex justify-content-center gap-2 align-items-center">
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-success btn-sm light text-uppercase"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-arrow-down-right w-4 h-4" aria-hidden="true">
-                                            <path d="m7 7 10 10"></path>
-                                            <path d="M17 7v10H7"></path>
-                                        </svg> Deposit</a>
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-danger btn-sm light text-uppercase"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-arrow-up-right w-4 h-4" aria-hidden="true">
-                                            <path d="M7 7h10v10"></path>
-                                      	      <path d="M7 17 17 7"></path>
-                                        </svg> Withdraw</a>
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-info btn-sm light text-uppercase  "><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-credit-card w-4 h-4" aria-hidden="true">
-                                            <rect width="20" height="14" x="2" y="5" rx="2"></rect>
-                                            <line x1="2" x2="22" y1="10" y2="10"></line>
-                                        </svg> Transfer</a>
-                                </div>
-							</div>
-						</div>
-					</div>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -493,5 +362,10 @@
 
 @endsection
 @push('scripts')
-	<script src="{{ URL::asset('assets/vendor/chart-js/chart.bundle.min.js') }}"></script>
+	<script>
+		// Initialize Lucide icons
+		if (typeof lucide !== 'undefined') {
+			lucide.createIcons();
+		}
+	</script>
 @endpush
