@@ -90,76 +90,126 @@
                                         <div class="card-header border-0 d-flex align-items-center justify-content-between">
                                             <h4 class="card-title mb-0">{{ __('KYC Verification') }}</h4>
 
-                                            {{-- <button type="button" class="btn btn-outline-primary">
-                                                <i data-lucide="upload" class="me-2"></i> {{ __('Upload Documents') }}
-                                            </button> --}}
-
                                             <a href="{{ route('documentUpload') }}" class="btn btn-outline-primary">
                                                 <i data-lucide="upload" class="me-2"></i> {{ __('Upload Documents') }}
                                             </a>
                                         </div>
 
                                         <div class="card-body">
-                                            <div class="row g-4">
-                                                {{-- ID Proof --}}
-                                                <div class="col-lg-12">
-                                                    <div class="border rounded-3 p-3">
-                                                        <h5 class="mb-3">{{ __('ID Proof') }}</h5>
-
-                                                        <div class="row g-3">
-                                                            <div class="col-md-6">
-                                                                <label class="form-label">{{ __('Front Side') }}</label>
-                                                                <div class="border rounded-3 d-flex align-items-center justify-content-center"
-                                                                    style="height:120px; background:#fff;">
-                                                                    <img src="{{ asset('assets/images/upload-placeholder.png') }}"
-                                                                        alt="Upload"
-                                                                        style="height:24px; width:24px; opacity:.6;">
+                                            @if ($user->kyc_verify == 0)
+                                                <div class="row g-4">
+                                                    {{-- ID Proof --}}
+                                                    @if ($idProof)
+                                                        <div class="col-lg-6">
+                                                            <div class="border rounded-3 p-3">
+                                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                                    <h5 class="mb-0">{{ $idProof->kyc_type }}</h5>
+                                                                    @php
+                                                                        $status = $idProof->Status ?? 0;
+                                                                        if ($status == 1) {
+                                                                            $statusText = 'Approved';
+                                                                            $statusClass = 'success';
+                                                                        } elseif ($status == 2) {
+                                                                            $statusText = 'Not Approved';
+                                                                            $statusClass = 'danger';
+                                                                        } else {
+                                                                            $statusText = 'Waiting for Approval';
+                                                                            $statusClass = 'warning';
+                                                                        }
+                                                                    @endphp
+                                                                    <span
+                                                                        class="badge bg-{{ $statusClass }}">{{ $statusText }}</span>
                                                                 </div>
-                                                                <input type="file" class="form-control mt-2"
-                                                                    name="kyc_id_front" />
-                                                            </div>
 
-                                                            <div class="col-md-6">
-                                                                <label class="form-label">{{ __('Back Side') }}</label>
-                                                                <div class="border rounded-3 d-flex align-items-center justify-content-center"
-                                                                    style="height:120px; background:#fff;">
-                                                                    <img src="{{ asset('assets/images/upload-placeholder.png') }}"
-                                                                        alt="Upload"
-                                                                        style="height:24px; width:24px; opacity:.6;">
+                                                                <div class="row g-3">
+                                                                    @if ($idProof->kyc_frontside)
+                                                                        <div class="col-md-6">
+                                                                            <label class="form-label">{{ __('Front Side') }}</label>
+                                                                            <div class="border rounded-3 d-flex align-items-center justify-content-center"
+                                                                                style="background:#fff; overflow:hidden;">
+                                                                                <a href="{{ asset('public' . $idProof->kyc_frontside) }}"
+                                                                                    target="_blank" rel="noopener noreferrer">
+                                                                                    <img src="{{ asset('public' . $idProof->kyc_frontside) }}"
+                                                                                        alt="Front Side"
+                                                                                        style="max-width:100%; max-height:100%; object-fit:contain; cursor:pointer;">
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+
+                                                                    @if ($idProof->kyc_backside)
+                                                                        <div class="col-md-6">
+                                                                            <label class="form-label">{{ __('Back Side') }}</label>
+                                                                            <div class="border rounded-3 d-flex align-items-center justify-content-center"
+                                                                                style="background:#fff; overflow:hidden;">
+                                                                                <a href="{{ asset('public' . $idProof->kyc_backside) }}"
+                                                                                    target="_blank" rel="noopener noreferrer">
+                                                                                    <img src="{{ asset('public' . $idProof->kyc_backside) }}"
+                                                                                        alt="Back Side"
+                                                                                        style="max-width:100%; max-height:100%; object-fit:contain; cursor:pointer;">
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
                                                                 </div>
-                                                                <input type="file" class="form-control mt-2"
-                                                                    name="kyc_id_back" />
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
+                                                    @endif
 
-                                                {{-- Address Proof --}}
-                                                <div class="col-lg-12">
-                                                    <div class="border rounded-3 p-3">
-                                                        <h5 class="mb-3">{{ __('Address Proof') }}</h5>
-
-                                                        <div class="row g-3">
-                                                            <div class="col-md-6">
-                                                                <label class="form-label">{{ __('Document') }}</label>
-                                                                <div class="border rounded-3 d-flex align-items-center justify-content-center"
-                                                                    style="height:120px; background:#fff;">
-                                                                    <img src="{{ asset('assets/images/upload-placeholder.png') }}"
-                                                                        alt="Upload"
-                                                                        style="height:24px; width:24px; opacity:.6;">
+                                                    {{-- Address Proof --}}
+                                                    @if ($addressProof)
+                                                        <div class="col-lg-6">
+                                                            <div class="border rounded-3 p-3">
+                                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                                    <h5 class="mb-0">{{ __('Address Proof') }}</h5>
+                                                                    @php
+                                                                        $status = $addressProof->Status ?? 0;
+                                                                        if ($status == 1) {
+                                                                            $statusText = 'Approved';
+                                                                            $statusClass = 'success';
+                                                                        } elseif ($status == 2) {
+                                                                            $statusText = 'Not Approved';
+                                                                            $statusClass = 'danger';
+                                                                        } else {
+                                                                            $statusText = 'Waiting for Approval';
+                                                                            $statusClass = 'warning';
+                                                                        }
+                                                                    @endphp
+                                                                    <span
+                                                                        class="badge bg-{{ $statusClass }}">{{ $statusText }}</span>
                                                                 </div>
-                                                                <input type="file" class="form-control mt-2"
-                                                                    name="kyc_address_proof" />
+
+                                                                <div class="row g-3">
+                                                                    @if ($addressProof->front_image)
+                                                                        <div class="col-md-6">
+                                                                            <label class="form-label">{{ __('Document') }}</label>
+                                                                            <div class="border rounded-3 d-flex align-items-center justify-content-center"
+                                                                                style="background:#fff; overflow:hidden;">
+                                                                                <a href="{{ asset('public' . $addressProof->front_image) }}"
+                                                                                    target="_blank" rel="noopener noreferrer">
+                                                                                    <img src="{{ asset('public' . $addressProof->front_image) }}"
+                                                                                        alt="Address Proof"
+                                                                                        style="max-width:100%; max-height:100%; object-fit:contain; cursor:pointer;">
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    @else
+                                                                        <div class="col-md-6">
+                                                                            <label class="form-label">{{ __('Document') }}</label>
+                                                                            <div class="border rounded-3 d-flex align-items-center justify-content-center"
+                                                                                style="background:#fff;">
+                                                                                <img src="{{ asset('assets/images/upload-placeholder.png') }}"
+                                                                                    alt="Upload"
+                                                                                    style="height:24px; width:24px; opacity:.6;">
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    @endif
                                                 </div>
-                                            </div>
-
-                                            {{-- Optional: status hint --}}
-                                            <div class="alert alert-light border mt-4 mb-0">
-                                                {{ __('Upload clear images. Supported: JPG/PNG/PDF.') }}
-                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -182,7 +232,8 @@
 
                                             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                                                 data-bs-target="#addWalletModal">
-                                                <i data-lucide="plus" class="me-2"></i> {{ __('Add Wallet Information') }}
+                                                <i data-lucide="plus" class="me-2"></i>
+                                                {{ __('Add Wallet Information') }}
                                             </button>
                                         </div>
 
@@ -193,7 +244,8 @@
                                                     style="max-width:150px;" onerror="this.style.display='none'"> --}}
                                                 <i data-lucide="wallet" class="text-muted"
                                                     style="width:64px;height:64px;"></i>
-                                                <div class="mt-3 fs-5 text-muted">{{ __('Please add your Wallet Details') }}
+                                                <div class="mt-3 fs-5 text-muted">
+                                                    {{ __('Please add your Wallet Details') }}
                                                 </div>
                                             </div>
                                         </div>
@@ -249,7 +301,8 @@
                                                             <div class="col-lg-12 mb-3">
                                                                 <label class="form-label">{{ __('Status') }}</label>
                                                                 <select class="form-select" name="status">
-                                                                    <option value="1" selected>{{ __('Active') }}</option>
+                                                                    <option value="1" selected>{{ __('Active') }}
+                                                                    </option>
                                                                     <option value="0">{{ __('Inactive') }}</option>
                                                                 </select>
                                                             </div>

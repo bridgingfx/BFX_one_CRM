@@ -97,29 +97,31 @@
                         </div>
 
                         <div class="col-xl-4">
-                            <div class="row">
+                            <div class="row g-3">
                                 <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-body d-flex align-items-center justify-content-between">
-                                            <h4 class="mb-0">Quick Deposit</h4>
-                                            <a href="{{ route('funds.funddeposit') }}" class="btn btn-light rounded"
-                                                aria-label="Quick Deposit">
-                                                <i data-lucide="zap"></i>
-                                            </a>
+                                    <a href="{{ route('funds.funddeposit') }}" aria-label="Quick Deposit">
+                                        <div class="card">
+                                            <div class="card-body d-flex align-items-center justify-content-between">
+                                                <h4 class="mb-0">Quick Deposit</h4>
+                                                <div class="btn btn-light rounded" aria-label="Quick Deposit">
+                                                    <i data-lucide="zap"></i>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
 
                                 <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-body d-flex align-items-center justify-content-between">
-                                            <h4 class="mb-0">Quick Withdraw</h4>
-                                            <a href="{{ route('funds.fundwithdrawal') }}" class="btn btn-light rounded"
-                                                aria-label="Quick Withdraw">
-                                                <i data-lucide="zap"></i>
-                                            </a>
+                                    <a href="{{ route('funds.fundwithdrawal') }}" aria-label="Quick Withdraw">
+                                        <div class="card">
+                                            <div class="card-body d-flex align-items-center justify-content-between">
+                                                <h4 class="mb-0">Quick Withdraw</h4>
+                                                <div class="btn btn-light rounded" aria-label="Quick Withdraw">
+                                                    <i data-lucide="zap"></i>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
 
                                 <div class="col-12">
