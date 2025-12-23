@@ -5,7 +5,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\KycUpdate;
 use App\Models\WalletDeposit;
 use App\Models\WalletWithdraw;
-use App\Services\MailService as MailService;
+use App\Services\MailService;
 use App\Services\PusherService;
 use DB;
 use Illuminate\Http\RedirectResponse;
@@ -18,6 +18,7 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     protected $pusherService;
+    protected $mailService;
 
     public function __construct(PusherService $pusherService, MailService $mailService)
     {
@@ -118,7 +119,6 @@ class ProfileController extends Controller
     }
     public function uploadDocument(Request $request)
     {
-        // dd($request->all());
         $time    = time() . "_";
         $email   = session('clogin');
         $folder  = 'public/_docs/';
@@ -142,11 +142,11 @@ class ProfileController extends Controller
 
         try {
             // ID Proof - Front
-            $imagePath = $request->file('image')->storeAs($folder, $time . $request->file('image')->getClientOriginalName());
+            $imagePath = $request->file('image')->storeAs('_docs', $time . $request->file('image')->getClientOriginalName(), 'public');
             // ID Proof - Back
-            $image1Path = $request->file('image1')->storeAs($folder, $time . $request->file('image1')->getClientOriginalName());
+            $image1Path = $request->file('image1')->storeAs('_docs', $time . $request->file('image1')->getClientOriginalName(), 'public');
             // Address Proof
-            $image2Path = $request->file('image2')->storeAs($folder, $time . $request->file('image2')->getClientOriginalName());
+            $image2Path = $request->file('image2')->storeAs('_docs', $time . $request->file('image2')->getClientOriginalName(), 'public');
 
             // Confirm all file paths
             if (! $imagePath || ! $image1Path || ! $image2Path) {
@@ -163,7 +163,7 @@ class ProfileController extends Controller
 
             $this->pusherService->sendPusherMessage([
                 'type'    => 'Document Upload',
-                'message' => 'A new KYC Document - ID Proof has been uploaded by ' . session('user')['fullname'],
+                'message' => 'A new KYC Document - ID Proof has been uploaded by ' . session('user')['name'],
                 'link'    => "/admin/kyc_details?id=" . md5($email),
                 'enc_id'  => md5($email),
             ]);
@@ -177,7 +177,7 @@ class ProfileController extends Controller
 
             $this->pusherService->sendPusherMessage([
                 'type'    => 'Document Upload',
-                'message' => 'A new KYC Document - Address Proof has been uploaded by ' . session('user')['fullname'],
+                'message' => 'A new KYC Document - Address Proof has been uploaded by ' . session('user')['name'],
                 'link'    => "/admin/kyc_details?id=" . md5($email),
                 'enc_id'  => md5($email),
             ]);
@@ -185,7 +185,7 @@ class ProfileController extends Controller
             $emailSubject = $settings['admin_title'] . ' - KYC ';
             $content      = '<div>We are pleased to inform you that your KYC has been successfully submitted your account..</div>';
             $templateVars = [
-                'name'           => session('user')['fullname'],
+                'name'           => session('user')['name'],
                 'site_link'      => $settings['copyright_site_name_text'],
                 "btn_text"       => "Go To Dashboard",
                 'email'          => $settings['email_from_address'],
@@ -195,7 +195,7 @@ class ProfileController extends Controller
             ];
             $this->mailService->sendEmail($email, $emailSubject, '', '', $templateVars);
 
-            return redirect()->to('/user-profile')->with("success", "KYC Documents successfully uploaded.");
+            return redirect()->to('/profile')->with("success", "KYC Documents successfully uploaded.");
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back()->with("error", "Upload failed: " . $e->getMessage());

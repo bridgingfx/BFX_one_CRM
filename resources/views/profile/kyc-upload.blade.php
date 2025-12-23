@@ -132,7 +132,8 @@
                                                 <div class="text-muted mb-2" style="font-size:12px;">
                                                     {{ __('Upload the front side of your ID') }}
                                                 </div>
-                                                <input type="file" class="form-control" name="image" required>
+                                                <input type="file" class="form-control" name="image"
+                                                    accept="application/pdf,image/png,image/jpeg" required>
                                                 <div class="text-muted mt-2" style="font-size:12px;">
                                                     {{ __('Maximum File Size Allowed: 2MB') }}
                                                 </div>
@@ -145,7 +146,8 @@
                                                 <div class="text-muted mb-2" style="font-size:12px;">
                                                     {{ __('Upload the back side of your ID') }}
                                                 </div>
-                                                <input type="file" class="form-control" name="image1" required>
+                                                <input type="file" class="form-control" name="image1"
+                                                    accept="application/pdf,image/png,image/jpeg" required>
                                                 <div class="text-muted mt-2" style="font-size:12px;">
                                                     {{ __('Maximum File Size Allowed: 2MB') }}
                                                 </div>
@@ -175,7 +177,8 @@
 
                                         <div class="row">
                                             <div class="col-lg-7 mb-4">
-                                                <input type="file" class="form-control" name="image2" required>
+                                                <input type="file" class="form-control" name="image2"
+                                                    accept="application/pdf,image/png,image/jpeg" required>
                                                 <div class="text-muted mt-2" style="font-size:12px;">
                                                     {{ __('Maximum File Size Allowed: 2MB') }}
                                                 </div>
